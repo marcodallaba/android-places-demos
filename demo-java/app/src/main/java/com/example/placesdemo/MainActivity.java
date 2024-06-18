@@ -26,6 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.placesdemo.programmatic_autocomplete.ProgrammaticAutocompleteToolbarActivity;
 import com.google.android.libraries.places.api.Places;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup Places Client
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), apiKey);
+            Places.initializeWithNewPlacesApiEnabled(getApplicationContext(), apiKey, Locale.ITALY);
         }
 
         setLaunchActivityClickListener(R.id.autocomplete_button, PlaceAutocompleteActivity.class);

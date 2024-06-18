@@ -161,19 +161,20 @@ public class ProgrammaticAutocompleteToolbarActivity extends AppCompatActivity {
         // (currently Kolkata). Modify these values to get results for another area. Make sure to
         // pass in the appropriate value/s for .setCountries() in the
         // FindAutocompletePredictionsRequest.Builder object as well.
+        /*
         final LocationBias bias = RectangularBounds.newInstance(
                 new LatLng(22.458744, 88.208162), // SW lat, lng
                 new LatLng(22.730671, 88.524896) // NE lat, lng
         );
-
+        */
         // Create a new programmatic Place Autocomplete request in Places SDK for Android
         final FindAutocompletePredictionsRequest newRequest = FindAutocompletePredictionsRequest
                 .builder()
                 .setSessionToken(sessionToken)
-                .setLocationBias(bias)
+                //.setLocationBias(bias)
                 .setQuery(query)
-                .setCountries(Arrays.asList("IN"))
-                .setTypesFilter(Arrays.asList(PlaceTypes.ESTABLISHMENT))
+                //.setCountries(Arrays.asList("IN"))
+                //.setTypesFilter(Arrays.asList(PlaceTypes.ESTABLISHMENT))
                 .build();
 
         // Perform autocomplete predictions request
@@ -205,23 +206,23 @@ public class ProgrammaticAutocompleteToolbarActivity extends AppCompatActivity {
 
         // Use the HTTP request URL for Geocoding API to get geographic coordinates for the place
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, requestURL, null,
-                                                          response -> {
-                                                              try {
-                                                                  // Inspect the value of "results" and make sure it's not empty
-                                                                  JSONArray results = response.getJSONArray("results");
-                                                                  if (results.length() == 0) {
-                                                                      Log.w(TAG, "No results from geocoding request.");
-                                                                      return;
-                                                                  }
+                response -> {
+                    try {
+                        // Inspect the value of "results" and make sure it's not empty
+                        JSONArray results = response.getJSONArray("results");
+                        if (results.length() == 0) {
+                            Log.w(TAG, "No results from geocoding request.");
+                            return;
+                        }
 
-                                                                  // Use Gson to convert the response JSON object to a POJO
-                                                                  GeocodingResult result = gson.fromJson(
-                                                                          results.getString(0), GeocodingResult.class);
-                                                                  displayDialog(placePrediction, result);
-                                                              } catch (JSONException e) {
-                                                                  e.printStackTrace();
-                                                              }
-                                                          }, error -> Log.e(TAG, "Request failed"));
+                        // Use Gson to convert the response JSON object to a POJO
+                        GeocodingResult result = gson.fromJson(
+                                results.getString(0), GeocodingResult.class);
+                        displayDialog(placePrediction, result);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> Log.e(TAG, "Request failed"));
 
         // Add the request to the Request queue.
         queue.add(request);
